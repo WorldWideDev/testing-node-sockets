@@ -1,0 +1,19 @@
+*{
+	font-family: monospace;
+	/*color: rgb(0,250,0);*/
+	/*font-size: 3em;*/
+}
+p{
+	margin: 0;
+}
+.container{
+	width: 970;
+	min-height: 600;
+	margin: 0 auto;
+	text-align: center;
+	margin-top: 160px;
+}
+#server{
+	border: solid;
+	display: inline-block;
+}

@@ -1,0 +1,61 @@
+<html>
+<head>
+	<title></title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script type ="text/javascript" src="/socket.io/socket.io.js"></script>
+    <script type ="text/javascript">
+        $(document).ready(function (){
+            // this triggers the connection event in our server!
+            var socket = io.connect();
+            // we'll write all the socket stuff after the above line!
+            $('button').click(function (){
+                socket.emit("posting_form", {reason: "because I want to learn about sockets!"});
+            });
+                socket.on('server_response', function (data){
+                console.log('The server says: ' + data.response);
+            });
+            $('form').submit(function() {
+			    // Get all the forms elements and their values in one step
+			    var values = {
+			    	name : this.name.value,
+			    	loc : this.locaish.value,
+			    	language : this.language.value,
+			    	comment : this.comment.value
+			    }
+			    socket.emit("posting_form", {reason: values});
+                socket.on('server_response', function (data){
+                	console.log(data.response)
+                	$('.sockRes').html('<div id="server"> <p>YOU GOT THIS FROM THE SERVER</p>' + '<br>' + data.response.name + '<br>' + data.response.loc + '<br>' + data.response.language + '<br>' + data.response.comment + '<br>'+ data.random +'</div>')
+				});
+                return false
+        	});
+		});
+    </script>
+</head>
+<body>
+
+	<div class='container'>
+		<h1>TAKE MY AWESOME SURVEY</h1>
+		<div class='sockRes'></div>
+		<form action='' method='POST'>
+			Your Name:<br><input type='text' name='name' placeholder='Your Name'><br>
+			Dojo Location:<br><select name='locaish'><br>
+							<option value='Seattle'>Seattle</option>
+							<option value='San Jose'>San Jose</option>
+							<option value='Deep Space'>Deep Space</option>
+							<option value='Narnia'>Narnia</option>
+						</select><br>
+			Favorite Language:<br><select name='language'>
+							<option value='Python'>Python</option>
+							<option value='C#'>C#</option>
+							<option value='JavaScript'>JavaScript</option>
+							<option value='Simplified Mandarin'>Simplified Mandarin</option>
+						</select><br>
+			Comment:<br><textarea name='comment' rows="6" cols="26"  placeholder="Say something cool"></textarea><br>
+			<input type="submit" value="Submit"></input>
+		</form>
+		<button>SOCKET TEST</button>
+	</div>
+</body>
+</html>
